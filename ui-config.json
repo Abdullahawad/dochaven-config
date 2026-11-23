@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "configVersion": 5,
+  "publishedAt": "2026-11-24T00:05:00.000Z",
+  "home": {
+    "appTitle": "DocHaven",
+    "heroTitle": "أهلاً بك !",
+    "heroSubtitle": "افتح مستنداتك وحرّرها على جهازك.",
+    "syncBadgeText": "محلي",
+    "openFileButtonLabel": "فتح ملف من الهاتف",
+    "openFileHint": "اعرض ملفات PDF و DOCX و XLSX و PPTX و TXT محلياً دون اتصال",
+    "quickStartTitle": "بدء مستند جديد",
+    "quickStartBadge": "سريع",
+    "templatesButtonLabel": "القوالب",
+    "pinnedSectionTitle": "المثبتة والمميزة",
+    "recentSectionTitle": "المستندات الأخيرة",
+    "teamBannerTitle": "مشاركة المستندات بسهولة",
+    "teamBannerSubtitle": "صدّر ملفاتك إلى PDF عربي وشاركها عبر تطبيقات النظام مباشرة",
+    "teamBannerButtonLabel": "فتح الأدوات",
+    "sectionsOrder": [
+      "hero",
+      "open-phone-file",
+      "quick-start",
+      "type-filters",
+      "pinned",
+      "recent",
+      "team-banner"
+    ],
+    "sectionsVisibility": {
+      "hero": true,
+      "open-phone-file": true,
+      "quick-start": true,
+      "type-filters": true,
+      "pinned": true,
+      "recent": true,
+      "team-banner": true
+    },
+    "quickCards": [
+      {
+        "id": "doc",
+        "label": "مستند",
+        "subtitle": "DOCX",
+        "action": "create-doc",
+        "visible": true
+      },
+      {
+        "id": "sheet",
+        "label": "جدول",
+        "subtitle": "XLSX",
+        "action": "create-sheet",
+        "visible": true
+      },
+      {
+        "id": "slide",
+        "label": "عرض",
+        "subtitle": "PPTX",
+        "action": "create-slide",
+        "visible": true
+      },
+      {
+        "id": "pdf",
+        "label": "مستند PDF",
+        "subtitle": "PDF",
+        "action": "create-pdf",
+        "visible": true
+      }
+    ]
+  },
+  "splash": {
+    "loadingText": "جاري فتح التطبيق...",
+    "subtitleText": "تجهيز المحررات العربية ومساحة الحفظ المحلي الآمن",
+    "footerCredit": "مجموعة البيان للتقنية والحلول الرقمية ·",
+    "versionLabel": "DocHaven Suite v1.2.0"
+  },
+  "tools": {
+    "heroTitle": "أدوات المكتب الفائقة",
+    "heroSubtitle": "جميع أدوات الذكاء الاصطناعي، المسح الضوئي، التحويل، الدمج، الضغط، والحماية مفعّلة وجاهزة",
+    "aiSectionTitle": "أدوات الذكاء الاصطناعي (AI Copilot)",
+    "pdfSectionTitle": "أدوات PDF الأكثر طلباً",
+    "securitySectionTitle": "أدوات التحرير والتحويل والأمان",
+    "proBannerTitle": "افتح الأدوات الاحترافية داخل DocHaven",
+    "proBannerSubtitle": "التنسيق المؤسسي الذكي، التحليل المالي السريع، العلامة المائية عند استخراج PDF، وتعديل نصوص PDF المباشر على جهازك.",
+    "proBannerButtonLabel": "تفعيل DocHaven Pro",
+    "visibleTools": {
+      "ai-slides": true,
+      "translate": true,
+      "ocr": true,
+      "pdf-to-word": true,
+      "merge": true,
+      "compress": true,
+      "esign": true,
+      "extract-tables": true,
+      "protect": true,
+      "watermark": true
+    }
+  },
+  "about": {
+    "modalTitle": "معلومات التطبيق والشركة والمطور",
+    "appNameDisplay": "DocHaven — دوك هيفِن",
+    "appTagline": "افتح مستنداتك وحرّرها على جهازك — حزمة المكتب العربية المتكاملة للمستندات والجداول والعروض وملفات PDF.",
+    "companyTitle": "معلومات الشركة الناشرة",
+    "companyName": "مجموعة البيان للتقنية والحلول الرقمية (Al-Bayan Digital Solutions)",
+    "companyDescription": "شركة متخصصة في تطوير البرمجيات المكتبية العربية الأصيلة (RTL-First) وحلول إنتاجية الأعمال الذكية التي تضمن أعلى معايير الخصوصية والأمان المحلي على أجهزة المستخدمين دون رفع ملفاتهم إلى خوادم خارجية.",
+    "developerTitle": "معلومات المطور وهندسة النظام",
+    "developerName": "المطور الرئيسي:  (Eng. Abdullah Awad)",
+    "developerDescription": "تم تصميم وهندسة وبناء DocHaven لتوفير تجربة تحرير عربية احترافية متوافقة مع صيغ DOCX / XLSX / PPTX / PDF / TXT مع محرك معادلات فوري ونظام تراخيص مشفّر يعمل عبر الإنترنت ودون اتصال.",
+    "copyrightText": "© 2026 DocHaven & Al-Bayan Tech — جميع الحقوق محفوظة.",
+    "footerBadgeText": "صُمّم وطُوّر بعناية للمستخدم العربي"
+  },
+  "appUpdate": {
+    "latestVersionCode": 13,
+    "latestVersionName": "1.3.0",
+    "minSupportedVersionCode": 13,
+    "releaseNotesAr": "تحديث هام v1.3.0: حفظ المستندات المفتوحة تلقائياً في القائمة، التكبير والتصغير لجميع الملفات، تمييز صفوف Excel، زر الرجوع والتراجع عن التعديلات، التصوير بالكاميرا لـ OCR، فصل شاشة معلومات التطبيق، وإصلاح الترجمة ودمج PDF.",
+    "updateUrl": "https://github.com/Abdullahawad/dochaven-config/releases/latest/download/DocHaven.apk",
+    "forceUpdate": true
+  }
+}
