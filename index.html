@@ -1,0 +1,2306 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DocHaven (دوك هيفِن) — الموقع الرسمي | افتح مستنداتك وحرّرها على جهازك</title>
+  <meta name="description" content="الموقع الرسمي لتطبيق DocHaven (دوك هيفِن) — حزمة المكتب العربية المتكاملة لفتح وتحرير ملفات DOCX و XLSX و PPTX و PDF محلياً على جهازك بخصوصية 100% مع أدوات الذكاء الاصطناعي وتنشيط DocHaven Pro." />
+  <meta name="theme-color" content="#043942" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --petrol: #043942;
+      --petrol-dark: #022329;
+      --mint: #1BB193;
+      --mint-light: #E3F5EB;
+      --cyan: #38BDF8;
+      --blue: #005EA4;
+      --blue-light: #EFF4FF;
+      --gold: #C9A227;
+      --gold-light: #FEF3C7;
+      --ink: #0F172A;
+      --slate: #404752;
+      --muted: #64748B;
+      --bg: #F7F8FA;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .mono {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Top Digital Scroll Progress Bar */
+    .scroll-progress-wrap {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3.5px;
+      z-index: 200;
+      background: rgba(4, 57, 66, 0.08);
+      pointer-events: none;
+    }
+
+    .scroll-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38BDF8 0%, #1BB193 50%, #C9A227 100%);
+      box-shadow: 0 0 12px rgba(27, 177, 147, 0.75);
+      transition: width 0.08s linear;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Modern Digital Scroll Reveal Animations */
+    .reveal {
+      opacity: 0;
+      will-change: transform, opacity, filter;
+      transition:
+        opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: var(--delay, 0ms);
+      filter: blur(6px);
+    }
+
+    .reveal-up {
+      transform: translateY(38px) scale(0.975);
+    }
+
+    .reveal-right {
+      transform: translateX(42px);
+    }
+
+    .reveal-left {
+      transform: translateX(-42px);
+    }
+
+    .reveal-scale {
+      transform: scale(0.92);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+      filter: blur(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* Sticky Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    .navbar-inner {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--petrol);
+      min-width: 0;
+      flex-shrink: 0;
+    }
+
+    .brand svg {
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 1.12rem;
+      font-weight: 900;
+      line-height: 1.2;
+      color: var(--petrol);
+      white-space: nowrap;
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+      margin: 0 auto;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--slate);
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 7px 11px;
+      border-radius: 999px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--petrol);
+      background: var(--blue-light);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      color: var(--petrol);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .mobile-menu-btn:hover {
+      background: var(--blue-light);
+      border-color: var(--blue);
+    }
+
+    .mobile-drawer {
+      display: none;
+      border-top: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(16px);
+      padding: 14px 20px 20px;
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.1);
+    }
+
+    .mobile-drawer.open {
+      display: block;
+    }
+
+    .mobile-drawer-links {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .mobile-drawer-links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.92rem;
+      font-weight: 700;
+      background: #F8FAFC;
+      border: 1px solid transparent;
+    }
+
+    .mobile-drawer-links a:hover {
+      background: var(--blue-light);
+      color: var(--blue);
+      border-color: #D3E4FF;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #043942 0%, #005EA4 100%);
+      color: #FFFFFF;
+      box-shadow: 0 4px 16px rgba(4, 57, 66, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 94, 164, 0.35);
+    }
+
+    .btn-mint {
+      background: linear-gradient(135deg, #1BB193 0%, #0D9488 100%);
+      color: #FFFFFF;
+      box-shadow: 0 6px 20px rgba(27, 177, 147, 0.34);
+    }
+
+    .btn-mint:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 28px rgba(27, 177, 147, 0.48);
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
+      color: #FFFFFF;
+      box-shadow: 0 6px 18px rgba(22, 163, 74, 0.28);
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(22, 163, 74, 0.4);
+    }
+
+    .btn-outline {
+      background: #FFFFFF;
+      color: var(--petrol);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--blue);
+      background: var(--blue-light);
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section with Digital Cyber-Grid & Animated Orbs */
+    .hero {
+      position: relative;
+      background: radial-gradient(circle at 80% 20%, #07505E 0%, #043942 42%, #021C22 100%);
+      color: #FFFFFF;
+      padding: 80px 0 92px;
+      overflow: hidden;
+    }
+
+    .hero-cyber-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+      pointer-events: none;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+      animation: floatOrb 9s ease-in-out infinite alternate;
+    }
+
+    .hero-orb-1 {
+      top: -100px;
+      left: -80px;
+      width: 360px;
+      height: 360px;
+      background: rgba(27, 177, 147, 0.28);
+    }
+
+    .hero-orb-2 {
+      bottom: -120px;
+      right: 10%;
+      width: 320px;
+      height: 320px;
+      background: rgba(56, 189, 248, 0.2);
+      animation-delay: -4s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(24px, -22px) scale(1.12); }
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(1.35); }
+    }
+
+    .pulse-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #5EEAD4;
+      box-shadow: 0 0 10px #5EEAD4;
+      animation: pulseDot 2s infinite;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 18px;
+      border-radius: 999px;
+      background: rgba(27, 177, 147, 0.16);
+      border: 1px solid rgba(94, 234, 212, 0.4);
+      color: #A7F3D0;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 3.8vw, 3.1rem);
+      font-weight: 900;
+      line-height: 1.28;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(90deg, #5EEAD4 0%, #38BDF8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p.lead {
+      font-size: 1.05rem;
+      color: #DCE9FF;
+      margin-bottom: 28px;
+      max-width: 620px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .format-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .format-chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .format-chip:hover {
+      transform: translateY(-2px);
+      background: rgba(27, 177, 147, 0.25);
+      border-color: #5EEAD4;
+    }
+
+    /* Hero App Preview Card with Floating Animation */
+    .hero-preview {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 28px 68px rgba(0, 0, 0, 0.42);
+      animation: floatCard 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatCard {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-8px); }
+    }
+
+    .preview-window {
+      background: #FFFFFF;
+      color: var(--ink);
+      border-radius: 20px;
+      padding: 22px;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .preview-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .stat-box {
+      background: linear-gradient(145deg, #F8FAFC 0%, #EFF4FF 100%);
+      border: 1px solid #D3E4FF;
+      border-radius: 16px;
+      padding: 14px;
+      transition: transform 0.25s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-3px);
+    }
+
+    .stat-val {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--petrol);
+    }
+
+    .stat-lbl {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    /* Section Commons */
+    section.section {
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .section-alt {
+      background: #FFFFFF;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 52px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      padding: 5px 16px;
+      border-radius: 999px;
+      background: var(--blue-light);
+      border: 1px solid #D3E4FF;
+      color: var(--blue);
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.55rem, 2.7vw, 2.25rem);
+      font-weight: 900;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .section-header p {
+      font-size: 0.98rem;
+      color: var(--slate);
+    }
+
+    /* Interactive Digital Glow Cards */
+    .editors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 22px;
+    }
+
+    .editor-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      transition:
+        transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.32s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .editor-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--mint), var(--blue));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .editor-card:hover {
+      transform: translateY(-7px);
+      border-color: #93C5FD;
+      box-shadow: 0 20px 42px rgba(0, 94, 164, 0.1);
+    }
+
+    .editor-card:hover::before {
+      opacity: 1;
+    }
+
+    .editor-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .editor-card:hover .editor-icon {
+      transform: scale(1.08) rotate(-3deg);
+    }
+
+    .editor-card h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .editor-card p {
+      font-size: 0.88rem;
+      color: var(--slate);
+      margin-bottom: 16px;
+    }
+
+    .feature-list {
+      list-style: none;
+      border-top: 1px solid #F1F5F9;
+      padding-top: 14px;
+    }
+
+    .feature-list li {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-list li::before {
+      content: '✓';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--mint-light);
+      color: #006D38;
+      font-size: 0.7rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* 10 Super Tools Grid */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 16px;
+    }
+
+    .tool-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      transition:
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.28s ease,
+        background 0.28s ease,
+        box-shadow 0.28s ease;
+    }
+
+    .tool-box:hover {
+      border-color: var(--mint);
+      background: #FFFFFF;
+      transform: translateY(-5px);
+      box-shadow: 0 14px 30px rgba(27, 177, 147, 0.11);
+    }
+
+    .tool-box-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .tool-title {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .tool-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .chip-pro {
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: #FFE08E;
+      color: #584400;
+      font-size: 0.68rem;
+      font-weight: 900;
+    }
+
+    .chip-free {
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: var(--mint-light);
+      color: #006D38;
+      font-size: 0.68rem;
+      font-weight: 900;
+    }
+
+    /* Privacy & Security Section */
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 22px;
+    }
+
+    .security-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 26px;
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .security-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(4, 57, 66, 0.08);
+    }
+
+    .security-card h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--petrol);
+      margin-bottom: 8px;
+    }
+
+    .security-card p {
+      font-size: 0.86rem;
+      color: var(--slate);
+    }
+
+    /* Pricing & Pro Activation Section */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 26px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .price-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .price-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .price-card.featured {
+      border: 2px solid var(--gold);
+      box-shadow: 0 20px 44px rgba(201, 162, 39, 0.16);
+      position: relative;
+    }
+
+    .featured-ribbon {
+      position: absolute;
+      top: -13px;
+      right: 24px;
+      background: linear-gradient(90deg, #C9A227, #9A7711);
+      color: #FFFFFF;
+      padding: 3px 16px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 900;
+    }
+
+    /* Interactive Key Tester Widget */
+    .activation-widget {
+      max-width: 720px;
+      margin: 44px auto 0;
+      background: #FFFFFF;
+      border: 1.5px solid #D3E4FF;
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 12px 34px rgba(0, 94, 164, 0.08);
+    }
+
+    .key-input-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .key-input {
+      flex: 1;
+      min-width: 220px;
+      height: 46px;
+      padding: 0 16px;
+      border-radius: 12px;
+      border: 1.5px solid #CBD5E1;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.9rem;
+      direction: ltr;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .key-input:focus {
+      border-color: var(--petrol);
+      box-shadow: 0 0 0 3px rgba(27, 177, 147, 0.18);
+    }
+
+    .verify-result {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      display: none;
+    }
+
+    /* Company & Developer Section */
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .profile-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 28px;
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.07);
+    }
+
+    .profile-role {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .profile-name {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    /* FAQ Section */
+    .faq-list {
+      max-width: 820px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    details.faq-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 22px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    details.faq-item[open] {
+      border-color: #93C5FD;
+      box-shadow: 0 8px 22px rgba(0, 94, 164, 0.06);
+    }
+
+    details.faq-item summary {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--ink);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    details.faq-item p {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: var(--slate);
+      border-top: 1px solid #F1F5F9;
+      padding-top: 12px;
+    }
+
+    /* Floating WhatsApp Button */
+    .floating-wa {
+      position: fixed;
+      bottom: 22px;
+      left: 22px;
+      z-index: 150;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
+      color: #FFFFFF;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 10px 28px rgba(22, 163, 74, 0.38);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .floating-wa:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 14px 34px rgba(22, 163, 74, 0.5);
+    }
+
+    /* Interactive App Screenshots Showcase */
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 26px;
+    }
+
+    .shot-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 18px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.25s ease;
+    }
+
+    .shot-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--mint);
+      box-shadow: 0 24px 52px rgba(4, 57, 66, 0.14);
+    }
+
+    .phone-frame {
+      width: 100%;
+      max-width: 245px;
+      border-radius: 30px;
+      padding: 8px;
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.22);
+      position: relative;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .phone-frame::before {
+      content: '';
+      display: block;
+      width: 58px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+      margin: 2px auto 8px;
+    }
+
+    .phone-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 22px;
+      background: #F8FAFC;
+    }
+
+    .shot-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .shot-title {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--petrol);
+      margin-bottom: 4px;
+    }
+
+    .shot-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* Fullscreen Screenshot Lightbox */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(2, 35, 41, 0.88);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox-overlay.open {
+      display: flex;
+    }
+
+    .lightbox-panel {
+      position: relative;
+      max-width: 440px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      color: #FFFFFF;
+      text-align: center;
+    }
+
+    .lightbox-img {
+      max-height: 76vh;
+      width: auto;
+      max-width: 100%;
+      border-radius: 24px;
+      border: 5px solid #1E293B;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+    }
+
+    .lightbox-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lightbox-btn {
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .lightbox-btn:hover {
+      background: rgba(27, 177, 147, 0.35);
+      border-color: var(--mint);
+    }
+
+    /* Mobile Digital Slider Controls (hidden on desktop grid) */
+    .mobile-slider-controls {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 28px rgba(4, 57, 66, 0.08);
+    }
+
+    .slider-nav-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #F8FAFC;
+      color: var(--petrol);
+      font-size: 1rem;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+
+    .slider-nav-btn:active {
+      transform: scale(0.92);
+    }
+
+    .slider-nav-btn:hover {
+      background: var(--petrol);
+      color: #FFFFFF;
+      border-color: var(--petrol);
+    }
+
+    .slider-center-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slider-digital-counter {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, var(--petrol) 0%, #0A5B66 100%);
+      padding: 3px 12px;
+      border-radius: 999px;
+      direction: ltr;
+    }
+
+    .slider-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      direction: ltr;
+    }
+
+    .slider-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      border: none;
+      padding: 0;
+      background: #CBD5E1;
+      cursor: pointer;
+      transition: width 0.28s ease, background 0.28s ease;
+    }
+
+    .slider-dot.active {
+      width: 22px;
+      background: var(--mint);
+    }
+
+    @media (max-width: 960px) {
+      .showcase-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .showcase-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 16px;
+        padding: 6px 8% 12px;
+      }
+      .showcase-grid::-webkit-scrollbar {
+        display: none;
+      }
+      .shot-card {
+        flex: 0 0 84%;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+      }
+      .mobile-slider-controls {
+        display: flex;
+      }
+    }
+
+    /* Footer */
+    footer.footer {
+      background: var(--petrol-dark);
+      color: #DCE9FF;
+      padding: 52px 0 32px;
+      font-size: 0.85rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .footer a {
+      color: #A7F3D0;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-bottom {
+      padding-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    @media (max-width: 1060px) {
+      .nav-links {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: inline-flex;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 0 16px;
+      }
+      .navbar-inner {
+        height: 62px;
+      }
+      .brand svg {
+        width: 34px;
+        height: 34px;
+      }
+      .brand-title {
+        font-size: 0.96rem;
+      }
+      .brand-sub {
+        font-size: 0.65rem;
+      }
+      .nav-actions .btn {
+        padding: 8px 14px;
+        font-size: 0.78rem;
+      }
+      .hero {
+        padding: 36px 0 44px;
+      }
+      .hero h1 {
+        font-size: 1.65rem;
+        line-height: 1.35;
+      }
+      .hero .lead {
+        font-size: 0.9rem;
+      }
+      .hero-ctas {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .hero-ctas .btn {
+        width: 100%;
+        min-height: 46px;
+        font-size: 0.88rem;
+      }
+      .section {
+        padding: 50px 0;
+      }
+      .section-header h2 {
+        font-size: 1.4rem;
+      }
+      .preview-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .key-input-row {
+        flex-direction: column;
+      }
+      .key-input-row .btn {
+        width: 100%;
+      }
+      .floating-wa {
+        bottom: 14px;
+        left: 14px;
+        padding: 10px 15px;
+        font-size: 0.78rem;
+        gap: 6px;
+      }
+      footer.footer {
+        padding: 40px 0 84px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 0.76rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Digital Scroll Progress Indicator -->
+  <div class="scroll-progress-wrap" aria-hidden="true">
+    <div id="scroll-progress-bar" class="scroll-progress-bar"></div>
+  </div>
+
+  <!-- 1. Sticky Top Navigation -->
+  <header id="main-navbar" class="navbar">
+    <div class="container navbar-inner">
+      <a href="#" class="brand">
+        <svg width="42" height="42" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="108" height="108" rx="26" fill="#043942" />
+          <path d="M34 25H60C63.5 25 66 27.5 66 31V32.5H42C37.2 32.5 34.5 35.2 34.5 40V73.5H34C30.5 73.5 28 71 28 67.5V31C28 27.5 30.5 25 34 25Z" fill="#FAF4EA" />
+          <path d="M43 35H64L78 49V76C78 79.5 75.5 82 72 82H43C39.5 82 37 79.5 37 76V41C37 37.5 39.5 35 43 35Z" fill="#FAF4EA" />
+          <path d="M64 35V44C64 46.8 66.2 49 69 49H78L64 35Z" fill="#1BB193" />
+          <rect x="50.2" y="58" width="23.6" height="5.6" rx="2.8" fill="#1BB193" />
+          <rect x="42.2" y="67.4" width="31.6" height="5.6" rx="2.8" fill="#1BB193" />
+        </svg>
+        <div>
+          <div class="brand-title"><bdi dir="ltr">DocHaven</bdi> — دوك هيفِن</div>
+          <div class="brand-sub">حزمة المكتب العربية الذكية · v1.3.5</div>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#download">تحميل التطبيق</a></li>
+        <li><a href="#screenshots">لقطات التطبيق</a></li>
+        <li><a href="#editors">المحررات</a></li>
+        <li><a href="#tools">الأدوات</a></li>
+        <li><a href="#pricing">الباقات والتنشيط</a></li>
+        <li><a href="#company">الشركة والمطور</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://github.com/Abdullahawad/dochaven-config/releases/latest/download/DocHaven.apk" class="btn btn-primary" download>⬇️ تحميل APK</a>
+        <button
+          id="mobile-nav-toggle"
+          type="button"
+          class="mobile-menu-btn"
+          aria-label="فتح القائمة"
+          aria-expanded="false"
+          aria-controls="mobile-nav-drawer"
+          onclick="toggleMobileMenu()"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Responsive Mobile Navigation Drawer -->
+    <nav id="mobile-nav-drawer" class="mobile-drawer" aria-label="القائمة للجوال">
+      <ul class="mobile-drawer-links">
+        <li><a href="#download" onclick="closeMobileMenu()">تحميل التطبيق (APK)<span>←</span></a></li>
+        <li><a href="#screenshots" onclick="closeMobileMenu()">لقطات من داخل التطبيق<span>←</span></a></li>
+        <li><a href="#editors" onclick="closeMobileMenu()">المحررات الأربعة<span>←</span></a></li>
+        <li><a href="#tools" onclick="closeMobileMenu()">الأدوات والذكاء الاصطناعي<span>←</span></a></li>
+        <li><a href="#security" onclick="closeMobileMenu()">الخصوصية والأمان<span>←</span></a></li>
+        <li><a href="#pricing" onclick="closeMobileMenu()">الباقات والتنشيط<span>←</span></a></li>
+        <li><a href="#company" onclick="closeMobileMenu()">الشركة والمطور<span>←</span></a></li>
+      </ul>
+      <a
+        href="https://wa.me/967772846289?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%B4%D8%B1%D8%A7%D8%A1%20%D9%85%D9%81%D8%AA%D8%A7%D8%AD%20%D8%AA%D9%86%D8%B4%D9%8A%D8%B7%20DocHaven%20Pro"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-whatsapp"
+        style="width: 100%;"
+      >
+        <span>تواصل عبر واتساب (</span>
+        <span class="mono" dir="ltr">772846289</span>
+        <span>)</span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- 2. Hero Section -->
+  <section class="hero">
+    <div class="hero-cyber-grid" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+
+    <div class="container hero-grid">
+      <div class="reveal reveal-right is-visible">
+        <div class="badge-pill">
+          <span class="pulse-dot"></span>
+          <span>يعمل محلياً 100% على جهازك · دون رفع ملفاتك لأي خادم</span>
+        </div>
+        <h1>
+          افتح مستنداتك وحرّرها على جهازك مع <span class="highlight"><bdi dir="ltr">DocHaven</bdi></span>
+        </h1>
+        <p class="lead">
+          الحزمة المكتبية العربية الأصيلة (<bdi dir="ltr">RTL-First</bdi>) على الهواتف الذكية والويب لفتح وتحرير مستندات <bdi dir="ltr">Word (DOCX)</bdi>، جداول البيانات ذات المعادلات الحية <bdi dir="ltr">Excel (XLSX)</bdi>، العروض التقديمية <bdi dir="ltr">PowerPoint (PPTX)</bdi>، وإدارة وتوقيع ملفات <bdi dir="ltr">PDF</bdi> مع أدوات الذكاء الاصطناعي والمسح الضوئي العربي.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="https://github.com/Abdullahawad/dochaven-config/releases/latest/download/DocHaven.apk" class="btn btn-mint" download>
+            <span>⬇️ تحميل التطبيق للأندرويد (APK · 7.4 MB)</span>
+          </a>
+          <a href="#pricing" class="btn btn-outline">تفعيل DocHaven Pro</a>
+          <a href="https://wa.me/967772846289?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%B4%D8%B1%D8%A7%D8%A1%20%D9%85%D9%81%D8%AA%D8%A7%D8%AD%20%D8%AA%D9%86%D8%B4%D9%8A%D8%B7%20DocHaven%20Pro" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+            <span>واتساب المبيعات:</span>
+            <span class="mono" dir="ltr">772846289</span>
+          </a>
+        </div>
+
+        <div class="format-chips">
+          <span class="format-chip mono">DOCX</span>
+          <span class="format-chip mono">XLSX</span>
+          <span class="format-chip mono">PPTX</span>
+          <span class="format-chip mono">PDF</span>
+          <span class="format-chip mono">TXT</span>
+          <span class="format-chip">الأرقام العربية (123 / ١٢٣)</span>
+          <span class="format-chip">وضع التركيز القرائي</span>
+        </div>
+      </div>
+
+      <div class="hero-preview reveal reveal-left is-visible" style="--delay: 140ms;">
+        <div class="preview-window">
+          <div class="preview-header">
+            <div>
+              <div style="font-weight: 900; font-size: 0.95rem; color: #043942;">مساحة عمل DocHaven Pro</div>
+              <div style="font-size: 0.74rem; color: #64748B;">حفظ تلقائي فوري · تشفير ECDSA P-256</div>
+            </div>
+            <span class="chip-free">نشط وموثّق</span>
+          </div>
+
+          <div style="background: #EFF4FF; border: 1px solid #D3E4FF; border-radius: 14px; padding: 14px;">
+            <div style="font-size: 0.82rem; font-weight: 800; color: #005EA4; margin-bottom: 4px;">
+              توافق ثنائي الاتجاه (RTL / BiDi)
+            </div>
+            <div style="font-size: 0.78rem; color: #404752;">
+              دعم كامل للنصوص العربية المختلطة مع الإنجليزية، وعزل تلقائي للصيغ الحسابية <bdi dir="ltr" class="mono">=SUM(B2:E2)</bdi> ومقاطع البرمجة.
+            </div>
+          </div>
+
+          <div class="preview-stats">
+            <div class="stat-box">
+              <div class="stat-val mono" data-counter="100" data-suffix="%">100%</div>
+              <div class="stat-lbl">خصوصية وحفظ محلي على جهازك</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val mono" data-counter="45000" data-prefix="+">+45,000</div>
+              <div class="stat-lbl">صف Excel مع بحث عائم فوري</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val mono">99.4%</div>
+              <div class="stat-lbl">دقة استخراج النصوص العربية OCR</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val mono" data-counter="10" data-suffix=" أدوات">10 أدوات</div>
+              <div class="stat-lbl">ذكاء اصطناعي وتحويل وحماية PDF</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.5 Interactive App Screenshots Showcase -->
+  <section id="screenshots" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal reveal-up">
+        <span class="section-tag">جولة بصرية حقيقية داخل التطبيق</span>
+        <h2>شاهد واجهات <bdi dir="ltr">DocHaven</bdi> العربية على الهاتف</h2>
+        <p>لقطات حقيقية من داخل التطبيق — اضغط على أي شاشة لتكبيرها واستعراض التفاصيل الكاملة.</p>
+      </div>
+
+      <div id="showcase-slider" class="showcase-grid">
+        <div class="shot-card reveal reveal-up" style="--delay: 0ms;" onclick="openLightbox(0)">
+          <div class="phone-frame">
+            <img src="./screenshots/01-welcome.png" alt="شاشة الترحيب الرئيسية لتطبيق DocHaven" loading="lazy" />
+          </div>
+          <span class="shot-badge">01 · شاشة الترحيب</span>
+          <div class="shot-title">واجهة بداية فاخرة وهوية عربية</div>
+          <p class="shot-desc">انطلاقة عصرية تعرض حزمة Docs وSheets وSlides وPDF مع خصوصية 100% على جهازك.</p>
+        </div>
+
+        <div class="shot-card reveal reveal-up" style="--delay: 70ms;" onclick="openLightbox(1)">
+          <div class="phone-frame">
+            <img src="./screenshots/02-onboard-word.png" alt="جولة المزايا السينمائية Word في DocHaven" loading="lazy" />
+          </div>
+          <span class="shot-badge">02 · جولة المزايا</span>
+          <div class="shot-title">حوّل النص إلى مستند جاهز</div>
+          <p class="shot-desc">جولة ترحيب سينمائية متكاملة تستعرض قدرات Word وExcel وPowerPoint وPDF بوضوح.</p>
+        </div>
+
+        <div class="shot-card reveal reveal-up" style="--delay: 140ms;" onclick="openLightbox(2)">
+          <div class="phone-frame">
+            <img src="./screenshots/03-trial-offer.png" alt="شاشة التجربة المجانية 7 أيام في DocHaven" loading="lazy" />
+          </div>
+          <span class="shot-badge">03 · تجربة مجانية</span>
+          <div class="shot-title">جرّب 7 أيام مجاناً بدون قيود</div>
+          <p class="shot-desc">فتح فوري لجميع ميزات DocHaven Pro لمدة 7 أيام بدون بطاقة بنكية أو إعلانات.</p>
+        </div>
+
+        <div class="shot-card reveal reveal-up" style="--delay: 0ms;" onclick="openLightbox(3)">
+          <div class="phone-frame">
+            <img src="./screenshots/04-home.png" alt="الشاشة الرئيسية لتطبيق DocHaven" loading="lazy" />
+          </div>
+          <span class="shot-badge">04 · مساحة العمل</span>
+          <div class="shot-title">إدارة سريعة لملفات الهاتف</div>
+          <p class="shot-desc">فتح ملفات PDF وDOCX وXLSX وPPTX محلياً مع إنشاء سريع وقوالب عربية جاهزة.</p>
+        </div>
+
+        <div class="shot-card reveal reveal-up" style="--delay: 70ms;" onclick="openLightbox(4)">
+          <div class="phone-frame">
+            <img src="./screenshots/05-tools.png" alt="مركز الأدوات والمسح الضوئي Bento في DocHaven" loading="lazy" />
+          </div>
+          <span class="shot-badge">05 · مركز الأدوات Bento</span>
+          <div class="shot-title">المسح السريع و10 أدوات فائقة</div>
+          <p class="shot-desc">تصميم Bento حديث للمسح السريع بالكاميرا، دمج وضغط PDF، التحويل إلى Word وExcel.</p>
+        </div>
+
+        <div class="shot-card reveal reveal-up" style="--delay: 140ms;" onclick="openLightbox(5)">
+          <div class="phone-frame">
+            <img src="./screenshots/06-translate.png" alt="نافذة الترجمة الفورية الذكية في DocHaven" loading="lazy" />
+          </div>
+          <span class="shot-badge">06 · الترجمة الذكية</span>
+          <div class="shot-title">ترجمة فورية للنصوص والملفات</div>
+          <p class="shot-desc">واجهة رقمية منظّمة بتبديل لغات فوري بين العربية والإنجليزية وحفظ النتيجة كمستند Word.</p>
+        </div>
+      </div>
+
+      <!-- Mobile Digital Slider Controls -->
+      <div class="mobile-slider-controls" aria-label="التحكم في سلايدر الصور">
+        <button type="button" class="slider-nav-btn" aria-label="الشاشة السابقة" onclick="stepMobileSlider(-1)">→</button>
+        <div class="slider-center-meta">
+          <div id="slider-digital-counter" class="slider-digital-counter">01 / 06</div>
+          <div id="slider-dots" class="slider-dots">
+            <button type="button" class="slider-dot active" aria-label="الشاشة 1" onclick="goToMobileSlide(0)"></button>
+            <button type="button" class="slider-dot" aria-label="الشاشة 2" onclick="goToMobileSlide(1)"></button>
+            <button type="button" class="slider-dot" aria-label="الشاشة 3" onclick="goToMobileSlide(2)"></button>
+            <button type="button" class="slider-dot" aria-label="الشاشة 4" onclick="goToMobileSlide(3)"></button>
+            <button type="button" class="slider-dot" aria-label="الشاشة 5" onclick="goToMobileSlide(4)"></button>
+            <button type="button" class="slider-dot" aria-label="الشاشة 6" onclick="goToMobileSlide(5)"></button>
+          </div>
+        </div>
+        <button type="button" class="slider-nav-btn" aria-label="الشاشة التالية" onclick="stepMobileSlider(1)">←</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fullscreen Lightbox Modal for App Screenshots -->
+  <div id="shot-lightbox" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="عرض لقطة الشاشة" onclick="if(event.target===this) closeLightbox()">
+    <div class="lightbox-panel">
+      <img id="lightbox-img" class="lightbox-img" src="" alt="" />
+      <div>
+        <div id="lightbox-title" style="font-size: 1.05rem; font-weight: 900;"></div>
+        <div id="lightbox-desc" style="font-size: 0.82rem; color: #A7F3D0; margin-top: 2px;"></div>
+      </div>
+      <div class="lightbox-controls">
+        <button type="button" class="lightbox-btn" onclick="stepLightbox(-1)">السابق →</button>
+        <button type="button" class="lightbox-btn" onclick="closeLightbox()">إغلاق ✕</button>
+        <button type="button" class="lightbox-btn" onclick="stepLightbox(1)">← التالي</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. The 4 Core Office Editors -->
+  <section id="editors" class="section">
+    <div class="container">
+      <div class="section-header reveal reveal-up">
+        <span class="section-tag">المحررات المكتبية المتكاملة</span>
+        <h2>أربعة محررات احترافية في تطبيق واحد خفيف وسريع</h2>
+        <p>صُمّم كل محرر ليمنحك تجربة كتابة وتحرير عربية سلسة على الهاتف وسطح المكتب مع حفظ تلقائي فوري وتصدير مباشر إلى PDF.</p>
+      </div>
+
+      <div class="editors-grid">
+        <!-- Writer -->
+        <article class="editor-card reveal reveal-up" style="--delay: 0ms;">
+          <div>
+            <div class="editor-icon" style="background: #DCE9FF; color: #005EA4;">DOCX</div>
+            <h3>محرر المستندات النصية (Writer)</h3>
+            <p>تحرير العقود والتقارير والمذكرات العربية مع فهرس عناوين جانبي وتنسيق مؤسسي ذكي.</p>
+          </div>
+          <ul class="feature-list">
+            <li>عناوين رئيسية وفرعية وفقرات وقوائم نقطية</li>
+            <li>مقاطع كود وصيغ معزولة باتجاه LTR</li>
+            <li>التنسيق المؤسسي الذكي بضغطة زر (Pro)</li>
+            <li>وضع التركيز بـ 3 أنماط (ورقي، سيبيا، ليلي)</li>
+          </ul>
+        </article>
+
+        <!-- Sheets -->
+        <article class="editor-card reveal reveal-up" style="--delay: 90ms;">
+          <div>
+            <div class="editor-icon" style="background: #A7F3D0; color: #006D38;">XLSX</div>
+            <h3>محرر الجداول المالية (Sheets)</h3>
+            <p>شبكة بيانات عربية RTL تدعم الملفات الضخمة والمعادلات الحسابية الحية وتعدد أوراق العمل.</p>
+          </div>
+          <ul class="feature-list">
+            <li>محرك معادلات فوري (SUM, AVERAGE, MIN, MAX, COUNT)</li>
+            <li>بحث عائم فوري وتصفية الصفوف المطابقة</li>
+            <li>تبديل فوري بين الأرقام الغربية (123) والشرقية (١٢٣)</li>
+            <li>ملخص التحليل المالي والمحوري السريع (Pro)</li>
+          </ul>
+        </article>
+
+        <!-- Slides -->
+        <article class="editor-card reveal reveal-up" style="--delay: 180ms;">
+          <div>
+            <div class="editor-icon" style="background: #FECACA; color: #BA1A1A;">PPTX</div>
+            <h3>محرر العروض التقديمية (Slides)</h3>
+            <p>إنشاء واستعراض الشرائح الاحترافية مع قوالب ألوان تنفيذية وملاحظات المتحدث.</p>
+          </div>
+          <ul class="feature-list">
+            <li>4 سمات لونية مؤسسية جاهزة للتطبيق الفوري</li>
+            <li>بطاقات مؤشرات الأداء والإحصاءات المالية</li>
+            <li>انتقالات التحول السلس 3D Morph بين الشرائح (Pro)</li>
+            <li>وضع العرض الكامل بملء الشاشة وتصدير PDF</li>
+          </ul>
+        </article>
+
+        <!-- PDF -->
+        <article class="editor-card reveal reveal-up" style="--delay: 270ms;">
+          <div>
+            <div class="editor-icon" style="background: #E2E8F0; color: #0F172A;">PDF</div>
+            <h3>قارئ ومحرر وموقّع ملفات PDF</h3>
+            <p>عرض مستمر فائق النقاوة لملفات PDF مع أدوات التظليل والتعليق والتوقيع وإدارة الصفحات.</p>
+          </div>
+          <ul class="feature-list">
+            <li>وضع تحرير نصوص PDF المباشر داخل الصفحة (Pro)</li>
+            <li>لوحة توقيع إلكتروني حي (Canvas) وتوثيق الصفحات</li>
+            <li>استخراج صفحات محددة إلى ملف PDF جديد</li>
+            <li>حذف الصفحات مع نسخ احتياطي في سلة المحذوفات</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. AI Copilot & 10 Super Tools Hub -->
+  <section id="tools" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal reveal-up">
+        <span class="section-tag">مركز الأدوات الفائقة والذكاء الاصطناعي</span>
+        <h2>10 أدوات متكاملة لمعالجة وتحويل وحماية مستنداتك</h2>
+        <p>جميع الأدوات مصمّمة لتعمل مباشرةً من داخل التطبيق وتفتح النتيجة فوراً في المحرر المناسب.</p>
+      </div>
+
+      <div class="tools-grid">
+        <div class="tool-box reveal reveal-up" style="--delay: 0ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">📊</span>
+            <span class="chip-pro">PRO</span>
+          </div>
+          <div class="tool-title">توليد العروض بالذكاء الاصطناعي</div>
+          <p class="tool-desc">أدخل موضوع العرض واختر القالب لتوليد عرض تقديمي عربي متكامل متعدد الشرائح فوراً.</p>
+        </div>
+
+        <div class="tool-box reveal reveal-up" style="--delay: 60ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">🌐</span>
+            <span class="chip-pro">PRO</span>
+          </div>
+          <div class="tool-title">ترجمة المستندات الفورية</div>
+          <p class="tool-desc">ترجمة المستندات والجداول والعروض بين العربية والإنجليزية مع حفظ التنسيق والمعادلات.</p>
+        </div>
+
+        <div class="tool-box reveal reveal-up" style="--delay: 120ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">🔍</span>
+            <span class="chip-pro">PRO</span>
+          </div>
+          <div class="tool-title">المسح الضوئي العربي (Arabic OCR)</div>
+          <p class="tool-desc">استخراج النصوص العربية من ملفات PDF والوثائق وتحويلها إلى مستند Word قابل للتحرير.</p>
+        </div>
+
+        <div class="tool-box reveal reveal-up" style="--delay: 180ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">📝</span>
+            <span class="chip-pro">PRO</span>
+          </div>
+          <div class="tool-title">تحويل PDF إلى Word (DOCX)</div>
+          <p class="tool-desc">تحويل صفحات وفقرات وملاحظات PDF إلى مستند نصي متكامل يُفتح في محرر المستندات.</p>
+        </div>
+
+        <div class="tool-box reveal reveal-up" style="--delay: 240ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">📈</span>
+            <span class="chip-pro">PRO</span>
+          </div>
+          <div class="tool-title">استخراج الجداول إلى Excel</div>
+          <p class="tool-desc">استخراج البيانات الرقمية والبنود مباشرةً إلى جدول XLSX مزوّد بمعادلات جمع حية.</p>
+        </div>
+
+        <div class="tool-box reveal reveal-up" style="--delay: 0ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">📑</span>
+            <span class="chip-free">مجاني</span>
+          </div>
+          <div class="tool-title">دمج ملفات PDF</div>
+          <p class="tool-desc">تحديد عدة ملفات PDF وتوحيد صفحاتها بترتيب متسلسل في ملف PDF واحد جديد.</p>
+        </div>
+
+        <div class="tool-box reveal reveal-up" style="--delay: 60ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">🗜️</span>
+            <span class="chip-free">مجاني</span>
+          </div>
+          <div class="tool-title">ضغط وتصغير حجم الملفات</div>
+          <p class="tool-desc">تقليص حجم الملفات بنسبة 38% أو 52% لتسهيل المشاركة مع الحفاظ التام على نقاوة النصوص.</p>
+        </div>
+
+        <div class="tool-box reveal reveal-up" style="--delay: 120ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">✍️</span>
+            <span class="chip-free">مجاني</span>
+          </div>
+          <div class="tool-title">التوقيع الإلكتروني الآمن</div>
+          <p class="tool-desc">رسم توقيعك الحي وتثبيته مع ختم الاعتماد والتاريخ على صفحات عقود ووثائق PDF.</p>
+        </div>
+
+        <div class="tool-box reveal reveal-up" style="--delay: 180ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">🔒</span>
+            <span class="chip-free">مجاني</span>
+          </div>
+          <div class="tool-title">قفل المستندات بكلمة مرور</div>
+          <p class="tool-desc">حماية المستندات الحساسة بكلمة مرور محلية مع إمكانية فك القفل في أي وقت.</p>
+        </div>
+
+        <div class="tool-box reveal reveal-up" style="--delay: 240ms;">
+          <div class="tool-box-top">
+            <span style="font-size: 1.35rem;">🛡️</span>
+            <span class="chip-free">مجاني</span>
+          </div>
+          <div class="tool-title">العلامة المائية المؤسسية</div>
+          <p class="tool-desc">إضافة أو تخصيص علامة مائية رسمية لحفظ حقوق الملكية عند العرض والطباعة والتصدير.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Privacy & Cryptographic Security -->
+  <section id="security" class="section">
+    <div class="container">
+      <div class="section-header reveal reveal-up">
+        <span class="section-tag">الأمان والخصوصية المحلية</span>
+        <h2>مستنداتك ملكك وحدك — لا تغادر جهازك أبداً</h2>
+        <p>صُمّم DocHaven وفق مبدأ الخصوصية أولاً (Local-First Architecture) لحماية وثائق الأفراد والشركات.</p>
+      </div>
+
+      <div class="security-grid">
+        <div class="security-card reveal reveal-up" style="--delay: 0ms;">
+          <h3>١. معالجة وحفظ محلي 100%</h3>
+          <p>تُفتح جميع الملفات (PDF, DOCX, XLSX, PPTX, TXT) وتُحرّر وتُحفظ على جهازك مباشرةً دون رفع أي محتوى أو أسماء ملفات إلى أي خادم سحابي خارجي.</p>
+        </div>
+        <div class="security-card reveal reveal-up" style="--delay: 110ms;">
+          <h3>٢. فتح آمن للملفات الواردة</h3>
+          <p>تُفتح ملفات الهاتف في وضع القراءة الآمن أولاً مع الحفاظ على البصمة الأصلية للملف (SHA-256) وتعطيل الروابط الخارجية غير الموثوقة تلقائياً.</p>
+        </div>
+        <div class="security-card reveal reveal-up" style="--delay: 220ms;">
+          <h3>٣. تراخيص موقّعة رقمياً (ECDSA P-256)</h3>
+          <p>يتم تنشيط باقة Pro عبر الإنترنت بتشفير مزدوج (AES-256-GCM + توقيع ECDSA P-256) ليُحفظ الترخيص الموقّع على جهازك ويعمل دون اتصال بالإنترنت.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5.5 Direct Android APK Download Section -->
+  <section id="download" class="section">
+    <div class="container">
+      <div class="reveal reveal-scale" style="background: linear-gradient(135deg, #043942 0%, #065F6C 60%, #0E7490 100%); border-radius: 28px; padding: 38px 28px; color: #FFFFFF; box-shadow: 0 22px 54px rgba(4, 57, 66, 0.22); position: relative; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; align-items: center;">
+          <div>
+            <span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(27, 177, 147, 0.2); border: 1px solid rgba(138, 246, 169, 0.45); color: #A7F3D0; font-size: 0.78rem; font-weight: 800; margin-bottom: 14px;">
+              <span>إصدار رسمي مباشر · Android APK</span>
+            </span>
+            <h2 style="font-size: clamp(1.5rem, 3vw, 2.15rem); font-weight: 900; line-height: 1.3; margin-bottom: 10px;">
+              نزّل تطبيق <bdi dir="ltr">DocHaven</bdi> مجاناً على هاتفك الأندرويد
+            </h2>
+            <p style="font-size: 0.92rem; color: #DCE9FF; margin-bottom: 22px;">
+              ملف تثبيت رسمي خفيف وسريع يشمل تجربة مجانية كاملة لباقة Pro لمدة 7 أيام، ويعمل محلياً 100% على جهازك.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+              <a href="https://github.com/Abdullahawad/dochaven-config/releases/latest/download/DocHaven.apk" class="btn btn-mint" download style="padding: 14px 26px; font-size: 0.96rem;">
+                <span>⬇️ تحميل DocHaven.apk الآن (v1.3.5)</span>
+              </a>
+              <span style="font-size: 0.78rem; color: #A7F3D0; font-weight: 700;">
+                الحجم: <bdi dir="ltr" class="mono">7.4 MB</bdi> · التوافق: <bdi dir="ltr" class="mono">Android 8.0+</bdi>
+              </span>
+            </div>
+
+            <!-- What's New in v1.3.5 -->
+            <div style="margin-top: 18px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(138, 246, 169, 0.28); border-radius: 16px; padding: 14px 16px;">
+              <div style="font-size: 0.82rem; font-weight: 800; color: #A7F3D0; margin-bottom: 8px;">✨ أبرز تحديثات الإصدار <bdi dir="ltr" class="mono">v1.3.5</bdi>:</div>
+              <ul style="padding-right: 18px; display: grid; gap: 5px; font-size: 0.8rem; color: #EFF6FF; margin: 0;">
+                <li><strong>التشفير الاختياري عند مشاركة أي مستند 🔒</strong>: اختر عند المشاركة بين الإرسال المباشر أو التشفير الفوري بكلمة مرور (PDF مشفّر أو ZIP قياسي يفتح في أي برنامج).</li>
+                <li><strong>عرض Word (<bdi dir="ltr">DOCX</bdi>) بالتنسيق الأصلي المطابق</strong> (الهوامش، الجداول، الألوان، والصور) مع زر تبديل لوضع القراءة السريع.</li>
+                <li><strong>عرض ألوان خلايا Excel (<bdi dir="ltr">XLSX</bdi>)</strong> والخطوط العريضة وعرض الأعمدة الحقيقي + تحديث تلقائي فوري لنصوص الواجهة السحابية.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="display: grid; gap: 12px;">
+            <div style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 20px; padding: 20px;">
+              <div style="font-size: 0.9rem; font-weight: 800; color: #A7F3D0; margin-bottom: 12px;">خطوات التثبيت السريعة (30 ثانية):</div>
+              <ol style="padding-right: 18px; display: grid; gap: 8px; font-size: 0.84rem; color: #EFF6FF; margin: 0;">
+                <li>اضغط على زر <strong>«تحميل DocHaven.apk الآن»</strong> لحفظ ملف التطبيق على هاتفك.</li>
+                <li>افتح الملف من التنزيلات؛ وإذا ظهرت رسالة <strong>«خدمة Google Play للحماية»</strong> اضغط على <strong>«مزيد من التفاصيل ⌄»</strong> ثم <strong>«التثبيت على أي حال»</strong>.</li>
+                <li>افتح التطبيق واستمتع بالتجربة المجانية 7 أيام، أو أدخل مفتاح <bdi dir="ltr">DocHaven Pro</bdi> للتفعيل الدائم.</li>
+              </ol>
+            </div>
+
+            <div style="background: rgba(254, 243, 199, 0.12); border: 1px solid rgba(253, 224, 71, 0.35); border-radius: 16px; padding: 12px 16px; font-size: 0.78rem; color: #FEF9C3; line-height: 1.65;">
+              <strong>🛡️ لماذا تظهر رسالة Google Play للحماية؟</strong><br/>
+              هذا تنبيه تلقائي من Android لكل تطبيق يُحمَّل مباشرة كملف <bdi dir="ltr">APK</bdi> من خارج المتجر. التطبيق موقّع رقمياً ويعمل محلياً 100% دون رفع ملفاتك.
+              <span style="display: block; margin-top: 6px; color: #E2E8F0;">
+                • في حال ظهور رسالة <em>«تعارض مع حزمة حالية»</em> عند التحديث من نسخة تجريبية قديمة، احذف النسخة القديمة أولاً ثم ثبّت <bdi dir="ltr" class="mono">v1.3.5</bdi>، وبعدها ستعمل جميع التحديثات القادمة تلقائياً دون حذف.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Pricing & Online Key Activation -->
+  <section id="pricing" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal reveal-up">
+        <span class="section-tag">الباقات والتنشيط عبر الإنترنت</span>
+        <h2>ابدأ مجاناً أو فعّل القوة الكاملة مع <bdi dir="ltr">DocHaven Pro</bdi></h2>
+        <p>يمنحك التطبيق تجربة مجانية شاملة لمدة 7 أيام لجميع ميزات Pro، وبعدها يمكنك التنشيط الفوري بمفتاح التفعيل عبر الإنترنت.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Standard / Trial Plan -->
+        <div class="price-card reveal reveal-right" style="--delay: 0ms;">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 800; color: var(--muted);">الباقة الأساسية + تجربة 7 أيام</div>
+            <h3 style="font-size: 1.5rem; font-weight: 900; margin: 6px 0 14px;">النسخة المجانية</h3>
+            <p style="font-size: 0.86rem; color: var(--slate); margin-bottom: 18px;">
+              جميع محررات المستندات والجداول والعروض وقارئ PDF الأساسي متاحة دائماً دون قيود على ملفاتك المحلية.
+            </p>
+            <ul class="feature-list">
+              <li>فتح وعرض ملفات PDF و DOCX و XLSX و PPTX و TXT</li>
+              <li>تحرير المستندات والجداول والعروض وحفظها محلياً</li>
+              <li>تصدير ومشاركة الملفات بصيغة PDF عربية</li>
+              <li>دمج وضغط ملفات PDF والتوقيع الإلكتروني</li>
+              <li>تجربة مجانية لمدة 7 أيام لجميع أدوات Pro</li>
+            </ul>
+          </div>
+          <div style="margin-top: 22px;">
+            <span class="btn btn-outline" style="width: 100%; cursor: default;">متاحة تلقائياً في التطبيق</span>
+          </div>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="price-card featured reveal reveal-left" style="--delay: 120ms;">
+          <span class="featured-ribbon">الأكثر طلباً للأفراد والمؤسسات</span>
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 800; color: #9A7711;">ترخيص موقّع يعمل دون اتصال</div>
+            <h3 style="font-size: 1.5rem; font-weight: 900; margin: 6px 0 14px;"><bdi dir="ltr">DocHaven Pro</bdi></h3>
+            <p style="font-size: 0.86rem; color: var(--slate); margin-bottom: 18px;">
+              تفعيل كامل لجميع أدوات الذكاء الاصطناعي، المسح الضوئي OCR، التحويل بين الصيغ، والتحليل المالي المتقدم.
+            </p>
+            <ul class="feature-list">
+              <li>توليد العروض التقديمية بالذكاء الاصطناعي (AI Slides)</li>
+              <li>ترجمة المستندات والجداول الفورية (عربي ⇄ إنجليزي)</li>
+              <li>المسح الضوئي الذكي (Arabic OCR) وتحويل PDF إلى Word</li>
+              <li>استخراج الجداول إلى Excel والتحليل المالي المحوري</li>
+              <li>التنسيق المؤسسي الذكي وتعديل نصوص PDF المباشر</li>
+              <li>تنشيط فوري عبر الإنترنت ويعمل دون اتصال بعد التفعيل</li>
+            </ul>
+          </div>
+          <div style="margin-top: 22px; display: grid; gap: 10px;">
+            <a href="https://wa.me/967772846289?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%B4%D8%B1%D8%A7%D8%A1%20%D9%85%D9%81%D8%AA%D8%A7%D8%AD%20%D8%AA%D9%86%D8%B4%D9%8A%D8%B7%20DocHaven%20Pro" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%;">
+              <span>طلب مفتاح تنشيط عبر واتساب (</span>
+              <span class="mono" dir="ltr">772846289</span>
+              <span>)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Online Key Verification Widget -->
+      <div class="activation-widget reveal reveal-scale" style="--delay: 180ms;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3 style="font-size: 1.05rem; font-weight: 900; color: var(--petrol);">
+              فحص صلاحية مفتاح التفعيل عبر الإنترنت
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--slate);">
+              تحقق من حالة مفتاح <bdi dir="ltr">DocHaven Pro</bdi> الخاص بك مباشرةً عبر خدمة التراخيص السحابية (<bdi dir="ltr">AES-256-GCM + ECDSA P-256</bdi>):
+            </p>
+          </div>
+          <span class="chip-free">متصل بـ GitHub Pages</span>
+        </div>
+
+        <form id="verify-key-form" class="key-input-row" onsubmit="verifyKeyOnline(event)">
+          <input
+            id="web-key-input"
+            type="text"
+            class="key-input"
+            placeholder="MKTB-XXXX-XXXX-XXXX"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="submit" class="btn btn-primary">فحص المفتاح الآن</button>
+        </form>
+        <div id="verify-result" class="verify-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Company & Developer Information -->
+  <section id="company" class="section">
+    <div class="container">
+      <div class="section-header reveal reveal-up">
+        <span class="section-tag">من نحن</span>
+        <h2>معلومات الشركة الناشرة والمطور</h2>
+        <p>فريق هندسي متخصص في بناء تطبيقات الأعمال العربية الأصيلة وحلول معالجة المستندات الآمنة.</p>
+      </div>
+
+      <div class="company-grid">
+        <div class="profile-card reveal reveal-right" style="--delay: 0ms;">
+          <div class="profile-role">الشركة المطوّرة والناشرة</div>
+          <div class="profile-name">مجموعة البيان للتقنية والحلول الرقمية</div>
+          <p style="font-size: 0.88rem; color: var(--slate); margin-bottom: 16px;">
+            (<bdi dir="ltr">Al-Bayan Tech & Digital Solutions</bdi>) — نطوّر برمجيات مكتبية وحلول تحول رقمي تضع اللغة العربية وخصوصية المستخدم في المقام الأول، مع توافق كامل مع المعايير العالمية للمستندات (<bdi dir="ltr">OOXML & PDF</bdi>).
+          </p>
+          <ul class="feature-list">
+            <li>تطوير أنظمة المكتب والأعمال العربية (RTL-First)</li>
+            <li>حلول التراخيص الرقمية المشفّرة وإدارة الواجهات السحابية</li>
+            <li>واتساب الدعم والمبيعات المباشر: <bdi dir="ltr" class="mono">+967 772 846 289</bdi></li>
+          </ul>
+        </div>
+
+        <div class="profile-card reveal reveal-left" style="--delay: 120ms;">
+          <div class="profile-role">المطور الرئيسي ومهندس البرمجيات</div>
+          <div class="profile-name">م. عبدالله عوض (<bdi dir="ltr">Eng. Abdullah Awad</bdi>)</div>
+          <p style="font-size: 0.88rem; color: var(--slate); margin-bottom: 16px;">
+            مهندس برمجيات ومطور تطبيقات ويب و<bdi dir="ltr">Android</bdi> متخصص في بناء الأنظمة التفاعلية عالية الأداء، محركات الجداول والمعادلات، وأنظمة الحماية والتشفير عبر <bdi dir="ltr">Web Crypto API</bdi>.
+          </p>
+          <ul class="feature-list">
+            <li>معمارية التطبيق: <bdi dir="ltr">React 19 + TypeScript + Tailwind CSS v4</bdi></li>
+            <li>تكامل الهواتف الذكية: <bdi dir="ltr">Capacitor 8 + Android Native PdfRenderer</bdi></li>
+            <li>منظومة الأمان والتراخيص: <bdi dir="ltr">ECDSA P-256 & AES-256-GCM</bdi></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Frequently Asked Questions -->
+  <section id="faq" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal reveal-up">
+        <span class="section-tag">الأسئلة الشائعة</span>
+        <h2>كل ما تحتاج معرفته عن <bdi dir="ltr">DocHaven</bdi></h2>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item reveal reveal-up" style="--delay: 0ms;" open>
+          <summary>هل يرفع التطبيق مستنداتي أو ملفاتي إلى أي خادم خارجي؟</summary>
+          <p>لا، مطلقاً. يفتح DocHaven جميع ملفاتك ويحرّرها ويحفظها محلياً على جهازك فقط. لا يتم إرسال أي محتوى مستندات أو أسماء ملفات إلى أي خادم، وتبدأ مشاركة أي ملف فقط عندما تضغط أنت على زر المشاركة.</p>
+        </details>
+
+        <details class="faq-item reveal reveal-up" style="--delay: 80ms;">
+          <summary>كيف أقوم بتنشيط باقة DocHaven Pro داخل التطبيق؟</summary>
+          <p>افتح التطبيق وأنت متصل بالإنترنت، ثم اضغط على زر «تفعيل PRO» في الشريط العلوي أو توجه إلى تبويب «الإعدادات»، وأدخل مفتاح التفعيل (بصيغة MKTB-XXXX-XXXX-XXXX أو DH1....) واضغط «تنشيط الآن». سيتم التحقق من المفتاح عبر الإنترنت وحفظ الترخيص الموقّع على جهازك ليعمل بعدها حتى بدون اتصال بالإنترنت.</p>
+        </details>
+
+        <details class="faq-item reveal reveal-up" style="--delay: 160ms;">
+          <summary>ماذا يحدث بعد انتهاء فترة التجربة المجانية (7 أيام)؟</summary>
+          <p>تبقى جميع ملفاتك المحفوظة محلياً والوظائف الأساسية لقراءة المستندات متاحة دائماً بنسبة 100%، بينما تتطلب أدوات الذكاء الاصطناعي وأدوات Pro المتقدمة إدخال مفتاح تنشيط للاستمرار في استخدامها.</p>
+        </details>
+
+        <details class="faq-item reveal reveal-up" style="--delay: 240ms;">
+          <summary>كيف يمكنني طلب مفتاح تفعيل رسمي أو التواصل مع الدعم؟</summary>
+          <p>يمكنك طلب مفتاح التفعيل مباشرةً عبر واتساب على الرقم <bdi dir="ltr" class="mono">772846289</bdi> وسيتم إرسال مفتاح التنشيط الفوري الخاص بك لتفعيله عبر الإنترنت.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Quick WhatsApp CTA -->
+  <a
+    href="https://wa.me/967772846289?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%B4%D8%B1%D8%A7%D8%A1%20%D9%85%D9%81%D8%AA%D8%A7%D8%AD%20%D8%AA%D9%86%D8%B4%D9%8A%D8%B7%20DocHaven%20Pro"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="floating-wa"
+    aria-label="تواصل عبر واتساب 772846289"
+  >
+    <span>💬 واتساب:</span>
+    <span class="mono" dir="ltr">772846289</span>
+  </a>
+
+  <!-- 9. Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="font-size: 1.2rem; font-weight: 900; color: #FFFFFF; margin-bottom: 8px;">
+            <bdi dir="ltr">DocHaven</bdi> — دوك هيفِن
+          </div>
+          <p style="color: #A7F3D0; margin-bottom: 12px;">افتح مستنداتك وحرّرها على جهازك.</p>
+          <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem;">
+            تطوير ونشر: مجموعة البيان للتقنية والحلول الرقمية · المطور الرئيسي: م. عبدالله عوض · واتساب: <bdi dir="ltr" class="mono">772846289</bdi>
+          </p>
+        </div>
+
+        <div>
+          <div style="font-weight: 800; color: #FFFFFF; margin-bottom: 10px;">روابط سريعة</div>
+          <ul style="list-style: none; display: grid; gap: 8px;">
+            <li><a href="#editors">المحررات المكتبية الأربعة</a></li>
+            <li><a href="#tools">أدوات الذكاء الاصطناعي وPDF</a></li>
+            <li><a href="#pricing">الباقات وتنشيط المنتج</a></li>
+            <li><a href="#company">معلومات الشركة والمطور</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div style="font-weight: 800; color: #FFFFFF; margin-bottom: 10px;">التحميل والدعم</div>
+          <ul style="list-style: none; display: grid; gap: 8px;">
+            <li><a href="https://github.com/Abdullahawad/dochaven-config/releases/latest/download/DocHaven.apk" download>تحميل تطبيق Android (APK)</a></li>
+            <li><a href="#pricing">تفعيل باقة DocHaven Pro</a></li>
+            <li><a href="https://wa.me/967772846289" target="_blank" rel="noopener noreferrer">واتساب الدعم: <bdi dir="ltr" class="mono">772846289</bdi></a></li>
+            <li><a href="#security">الأمان والخصوصية المحلية</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 DocHaven & Al-Bayan Tech — جميع الحقوق محفوظة.</span>
+        <span class="mono">com.albayan.maktabi · v1.3.5</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 0. Responsive Mobile Navigation Drawer
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      const btn = document.getElementById('mobile-nav-toggle');
+      if (!drawer || !btn) return;
+      const open = drawer.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    function closeMobileMenu() {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      const btn = document.getElementById('mobile-nav-toggle');
+      if (drawer) drawer.classList.remove('open');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    }
+
+    // 0.5 Interactive Screenshots Lightbox
+    const APP_SCREENSHOTS = [
+      { src: './screenshots/01-welcome.png', title: 'شاشة الترحيب الرئيسية', desc: 'واجهة بداية فاخرة وهوية عربية أصيلة 100% على جهازك' },
+      { src: './screenshots/02-onboard-word.png', title: 'جولة المزايا السينمائية', desc: 'استعراض احترافي لقدرات Word وExcel وPowerPoint وPDF' },
+      { src: './screenshots/03-trial-offer.png', title: 'جرّب 7 أيام مجاناً', desc: 'تجربة كاملة لجميع أدوات DocHaven Pro بدون بطاقة بنكية' },
+      { src: './screenshots/04-home.png', title: 'مساحة العمل والإنشاء السريع', desc: 'فتح ملفات الهاتف محلياً مع قوالب عربية جاهزة' },
+      { src: './screenshots/05-tools.png', title: 'مركز الأدوات والمسح الضوئي Bento', desc: 'المسح السريع بالكاميرا ودمج PDF والتحويل إلى Word وExcel' },
+      { src: './screenshots/06-translate.png', title: 'الترجمة الفورية الذكية', desc: 'واجهة رقمية حديثة للترجمة بين العربية والإنجليزية' },
+    ];
+    let currentShotIdx = 0;
+    let mobileSlideIdx = 0;
+
+    function updateMobileSliderUI(idx) {
+      mobileSlideIdx = Math.max(0, Math.min(APP_SCREENSHOTS.length - 1, idx));
+      const counter = document.getElementById('slider-digital-counter');
+      if (counter) {
+        const cur = String(mobileSlideIdx + 1).padStart(2, '0');
+        const tot = String(APP_SCREENSHOTS.length).padStart(2, '0');
+        counter.textContent = cur + ' / ' + tot;
+      }
+      document.querySelectorAll('#slider-dots .slider-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === mobileSlideIdx);
+      });
+    }
+
+    function goToMobileSlide(idx) {
+      const container = document.getElementById('showcase-slider');
+      if (!container) return;
+      const cards = container.querySelectorAll('.shot-card');
+      const targetIdx = (idx + cards.length) % cards.length;
+      const card = cards[targetIdx];
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        updateMobileSliderUI(targetIdx);
+      }
+    }
+
+    function stepMobileSlider(delta) {
+      goToMobileSlide(mobileSlideIdx + delta);
+    }
+
+    (function initMobileSliderObserver() {
+      const container = document.getElementById('showcase-slider');
+      if (!container || !('IntersectionObserver' in window)) return;
+      const cards = Array.from(container.querySelectorAll('.shot-card'));
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+              const i = cards.indexOf(entry.target);
+              if (i !== -1) updateMobileSliderUI(i);
+            }
+          });
+        },
+        { root: container, threshold: 0.6 }
+      );
+      cards.forEach((c) => obs.observe(c));
+    })();
+
+    function renderLightbox() {
+      const item = APP_SCREENSHOTS[currentShotIdx];
+      const img = document.getElementById('lightbox-img');
+      const title = document.getElementById('lightbox-title');
+      const desc = document.getElementById('lightbox-desc');
+      if (img && item) {
+        img.src = item.src;
+        img.alt = item.title;
+      }
+      if (title && item) title.textContent = item.title;
+      if (desc && item) desc.textContent = item.desc;
+    }
+
+    function openLightbox(index) {
+      currentShotIdx = index;
+      renderLightbox();
+      const box = document.getElementById('shot-lightbox');
+      if (box) box.classList.add('open');
+    }
+
+    function closeLightbox() {
+      const box = document.getElementById('shot-lightbox');
+      if (box) box.classList.remove('open');
+    }
+
+    function stepLightbox(delta) {
+      currentShotIdx = (currentShotIdx + delta + APP_SCREENSHOTS.length) % APP_SCREENSHOTS.length;
+      renderLightbox();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      const box = document.getElementById('shot-lightbox');
+      if (!box || !box.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') stepLightbox(1);
+      if (e.key === 'ArrowRight') stepLightbox(-1);
+    });
+
+    // 1. Modern Scroll-Reveal Observer & Scroll Progress Indicator
+    (function initScrollAnimations() {
+      const progressBar = document.getElementById('scroll-progress-bar');
+      const navbar = document.getElementById('main-navbar');
+      const revealEls = document.querySelectorAll('.reveal');
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+        );
+        revealEls.forEach((el) => observer.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+      }
+
+      window.addEventListener(
+        'scroll',
+        () => {
+          const scrollTop = window.scrollY || document.documentElement.scrollTop;
+          const docHeight =
+            document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          if (progressBar && docHeight > 0) {
+            progressBar.style.width = Math.min(100, (scrollTop / docHeight) * 100) + '%';
+          }
+          if (navbar) {
+            navbar.classList.toggle('scrolled', scrollTop > 20);
+          }
+        },
+        { passive: true }
+      );
+    })();
+
+    // 2. Live Online Key Verification via GitHub Pages (AES-256-GCM + SHA-256)
+    async function sha256Hex(text) {
+      const buf = new TextEncoder().encode(text);
+      const digest = await crypto.subtle.digest('SHA-256', buf);
+      return Array.from(new Uint8Array(digest))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+
+    async function verifyKeyOnline(e) {
+      e.preventDefault();
+      const input = document.getElementById('web-key-input');
+      const box = document.getElementById('verify-result');
+      const raw = (input.value || '').trim().toUpperCase().replace(/\s+/g, '');
+      box.style.display = 'block';
+
+      if (!raw || raw.length < 8) {
+        box.style.background = '#FFDAD6';
+        box.style.color = '#93000A';
+        box.textContent = 'يرجى إدخال مفتاح تفعيل صالح (مثال: MKTB-XXXX-XXXX-XXXX).';
+        return;
+      }
+
+      box.style.background = '#EFF4FF';
+      box.style.color = '#005EA4';
+      box.textContent = 'جاري التحقق من المفتاح عبر خدمة التراخيص السحابية...';
+
+      try {
+        const cacheBust = '?v=' + Date.now();
+        const [keysRes, revRes] = await Promise.all([
+          fetch('./online-keys.json' + cacheBust, { cache: 'no-store' }),
+          fetch('./revoked.json' + cacheBust, { cache: 'no-store' }),
+        ]);
+        const keysData = await keysRes.json();
+        const revData = revRes.ok ? await revRes.json() : { revokedKeyIds: [] };
+        const lookupHash = await sha256Hex('dochaven-lookup-v1:' + raw);
+        const entry = (keysData.keys || []).find((k) => k.lookupHash === lookupHash);
+
+        if (!entry) {
+          box.style.background = '#FFDAD6';
+          box.style.color = '#93000A';
+          box.textContent = 'مفتاح التفعيل غير موجود في السجل السحابي. يرجى التأكد من المفتاح.';
+          return;
+        }
+
+        if (Array.isArray(revData.revokedKeyIds) && revData.revokedKeyIds.includes(entry.keyId)) {
+          box.style.background = '#FFDAD6';
+          box.style.color = '#93000A';
+          box.textContent = 'هذا المفتاح تم إلغاؤه من قبل الإدارة (' + entry.keyId + ').';
+          return;
+        }
+
+        box.style.background = '#E3F5EB';
+        box.style.color = '#006D38';
+        box.textContent =
+          '✓ مفتاح تفعيل DocHaven Pro صالح ونشط (' +
+          entry.keyId +
+          ') — يمكنك إدخاله الآن في التطبيق لتنشيط الباقة الاحترافية.';
+      } catch (err) {
+        box.style.background = '#FFDAD6';
+        box.style.color = '#93000A';
+        box.textContent = 'تعذّر الاتصال بسجل المفاتيح حالياً. يرجى المحاولة مجدداً.';
+      }
+    }
+  </script>
+</body>
+</html>
